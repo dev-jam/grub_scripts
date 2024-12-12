@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# searches all filesystems recursively for iso files in the directory named: "boot-isos"
+echo 1>&2 "Adding boot menu entry to find and boot ISO's (global)"
+exec tail -n +4 $0
+
+submenu "Find and boot ISO's (global)" {
+
+	insmod regexp
+	insmod loopback
+	insmod part_gpt
+	insmod part_msdos
+
+	for iso_with_device in (*)/boot-isos/*.iso; do
+
+		# Remove the grub device name to get just the path to the iso relative to its root.
+		regexp --set=iso '^\(.*\)(.*$)' "$iso_with_device"
+
+		# Prevent message when directory is empty
+		if [ "${iso}" != "/boot-isos/*.iso" ]; then
+			menuentry "Boot: $iso_with_device" $iso {
+				iso_path=$2
+				export iso_path
+				search --set=root --file $iso_path
+				loopback loop $iso_path
+				root=(loop)
+				configfile /boot/grub/loopback.cfg
+				loopback --delete loop
+			}
+		fi
+	done
+}
