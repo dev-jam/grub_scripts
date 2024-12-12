@@ -1,8 +1,7 @@
 #!/bin/sh
-
-# searches all filesystems recursively for iso files in the directory named: "boot-isos"
-echo 1>&2 "Adding boot menu entry to find and boot ISO's (global)"
+echo 1>&2 "Adding boot menu entry for finding and booting ISO's (global)"
 exec tail -n +4 $0
+# searches all filesystems recursively for iso files in the directory named: "boot-isos"
 
 submenu "Find and boot ISO's (global)" {
 

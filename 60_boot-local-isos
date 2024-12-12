@@ -1,8 +1,7 @@
 #!/bin/sh
-
-# searches the filesystem where grub resides for iso files in the directory "/boot-isos"
-echo 1>&2 "Adding boot menu entry to find and boot ISO's (local)"
+echo 1>&2 "Adding boot menu entry for finding and booting ISO's (local)"
 exec tail -n +4 $0
+# searches the filesystem where grub resides for iso files in the directory "/boot-isos"
 
 submenu "Find and boot ISO's (local)" {
 
